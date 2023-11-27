@@ -8,5 +8,7 @@ You must watch the briefing video and read through the manual to engage in the d
 Section: L04
 
 MacID: stale
+       shahim45
 
 StudentID: 400433891
+           400440384
