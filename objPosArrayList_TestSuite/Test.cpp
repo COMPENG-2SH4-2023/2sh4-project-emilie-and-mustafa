@@ -353,6 +353,69 @@ void testRemoveTail_5Element()
 	// The destructor will be called automatically for stack-allocated objects
 }
 
+// Test case 6a, getElement with invalid index (negative)
+void testGetElement_OutOfBounds_neg()
+{
+	objPosArrayList thisList;
+	objPos currentPos;
+	int index = -1;
+
+	ASSERT_THROWS(thisList.getElement(currentPos, index), std::out_of_range);
+}
+
+// Test Case 6b, getElement with invalid index (greater than max)
+void testGetElement_OutOfBounds_max()
+{
+	objPosArrayList thisList;
+	objPos currentPos;
+	int index = ARRAY_MAX_CAP;
+
+	ASSERT_THROWS(thisList.getElement(currentPos, index), std::out_of_range);
+}
+
+// Test Case 6c, inserting head into a full list
+void testInsertHead_FullList()
+{
+	objPosArrayList thisList;
+	objPos samplePos{2, 5, 'a'};
+
+	for (int i = 0; i < ARRAY_MAX_CAP; ++i) {
+		thisList.insertHead(samplePos);
+	}
+
+	ASSERT_THROWS(thisList.insertHead(samplePos), std::out_of_range);
+}
+
+// Test Case 6d, inserting tail into full list
+void testInsertTail_FullList()
+{
+	objPosArrayList thisList;
+	objPos samplePos{2, 5, 'a'};
+
+	for (int i = 0; i < ARRAY_MAX_CAP; ++i) {
+		thisList.insertTail(samplePos);
+	}
+
+	ASSERT_THROWS(thisList.insertTail(samplePos), std::out_of_range);
+}
+
+// Test Case 6e, remove head from empty list
+void testRemoveHead_EmptyList()
+{
+	objPosArrayList thisList;
+	objPos currentPos;
+
+	ASSERT_THROWS(thisList.removeHead(), std::out_of_range);
+}
+
+// Test Case 6f, removing tail from empty list
+void testRemoveTail_EmptyList()
+{
+	objPosArrayList thisList;
+	objPos currentPos;
+
+	ASSERT_THROWS(thisList.removeTail(), std::out_of_range);
+}
 
 
 
@@ -369,6 +432,13 @@ bool runAllTests(int argc, char const *argv[]) {
 	s.push_back(CUTE(testRemoveTail_1Element));
 	s.push_back(CUTE(testRemoveTail_5Element));
 	
+	// additional test cases
+	s.push_back(CUTE(testGetElement_OutOfBounds_neg));
+	s.push_back(CUTE(testGetElement_OutOfBounds_max));
+	s.push_back(CUTE(testInsertHead_FullList));
+	s.push_back(CUTE(testInsertTail_FullList));
+	s.push_back(CUTE(testRemoveHead_EmptyList));
+	s.push_back(CUTE(testRemoveTail_EmptyList));
 
 
 
