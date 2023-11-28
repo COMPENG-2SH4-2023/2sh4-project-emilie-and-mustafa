@@ -99,22 +99,32 @@ void DrawScreen(void)
 {
     MacUILib_clearScreen(); 
 
-    objPos playerPos;
+    objPosArrayList* playerPosList;
     objPos foodPos;
 
-    playerPtr->getPlayerPos(playerPos);
+    playerPtr->getPlayerPos(*playerPosList);
     foodPosPtr->getFoodPos(foodPos);
 
     for(int i = 0; i < gameMechsPtr->getBoardSizeY(); i++){
         for(int j = 0; j < gameMechsPtr->getBoardSizeX(); j++){
             if(i == 0 || i == gameMechsPtr->getBoardSizeY()-1 || j == 0 || j == gameMechsPtr->getBoardSizeX()-1){
                 MacUILib_printf("#");
-            } else if(playerPos.x == j && playerPos.y == i){
-                MacUILib_printf("%c", playerPos.symbol);
             } else if (foodPos.x == j && foodPos.y == i){
                 MacUILib_printf("%c", foodPos.symbol);
             } else {
-                MacUILib_printf(" ");
+                int itemFound = 0;
+                for(int k=0; k<playerPosList->getSize(); k++){
+                    objPos playerPos;
+                    playerPosList->getElement(playerPos, k);
+                    if(j == playerPos.x && i == playerPos.y){
+                        MacUILib_printf("%c", playerPos.symbol);
+                        itemFound = 1;
+                        break;
+                    }
+                }
+                if(!itemFound){
+                    MacUILib_printf(" ");
+                }
             }
             
 
