@@ -20,11 +20,7 @@ class Player
         ~Player();
 
         objPosArrayList* getPlayerPos(); // Upgrade this in iteration 3.
-<<<<<<< HEAD
         void updatePlayerDir();
-=======
-        void updatePlayerDir(); 
->>>>>>> 3177174bdd4cdfed9fa0a0f29a7ead20c2299733
         void movePlayer();
 
         char getPlayerSymbol();

@@ -53,6 +53,6 @@ class GameMechs
 
 };
 
-extern GameMechs* gameMechsPtr;
+
 
 #endif

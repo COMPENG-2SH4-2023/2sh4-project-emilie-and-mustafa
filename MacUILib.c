@@ -2,7 +2,7 @@
 
 print_ptr MacUILib_printf;
 
-/*
+
 #ifdef WINDOWS
 
 	#include <conio.h>
@@ -47,9 +47,9 @@ print_ptr MacUILib_printf;
 	
 #endif
 
-*/
 
-	
+
+/*	
 #ifdef POSIX
 
 	#include <ncurses.h>
@@ -112,3 +112,4 @@ print_ptr MacUILib_printf;
 	}
 
 #endif
+*/

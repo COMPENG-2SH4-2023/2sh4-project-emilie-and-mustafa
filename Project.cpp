@@ -49,7 +49,7 @@ void Initialize(void)
     MacUILib_clearScreen();
 
     gameMechsPtr = new GameMechs(); // pointer to gameMechs class
-    foodPtr = new Food(); // pointer to food class
+    foodPtr = new Food(gameMechsPtr); // pointer to food class
     playerPtr = new Player(gameMechsPtr, foodPtr); // pointer to player class
 
 }

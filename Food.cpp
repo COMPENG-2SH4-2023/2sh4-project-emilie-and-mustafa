@@ -1,17 +1,17 @@
 #include "Food.h"
 
 
-Food::Food(){
-    srand(static_cast<unsigned>(time(0)));
-
+Food::Food(GameMechs* thisGMRef){
+    srand((time(0)));
+    mainGameMechsRef = thisGMRef; // reference to game mechs class
     int randX, randY;
     char symbol = 'o';
 
     // randomly generates x and y coordinates 
     // until it gets a set that is not equal to the starting position of the player (14,7)
     do {
-        randX = 1 + rand() % (gameMechsPtr->getBoardSizeX() - 3); 
-        randY = 1 + rand() % (gameMechsPtr->getBoardSizeY() - 3);
+        randX = 1 + rand() % (mainGameMechsRef->getBoardSizeX() - 3); 
+        randY = 1 + rand() % (mainGameMechsRef->getBoardSizeY() - 3);
     }
     while(randX == 14 || randY == 7);
 
@@ -32,8 +32,8 @@ void Food::generateFood(objPosArrayList* blockOffList){
 
     do {
         // gets random coordinates for x and y, sets the flag to true
-        randX = 1 + rand() % (gameMechsPtr->getBoardSizeX() - 3);
-        randY = 1 + rand() % (gameMechsPtr->getBoardSizeY() - 3);
+        randX = 1 + rand() % (mainGameMechsRef->getBoardSizeX() - 3);
+        randY = 1 + rand() % (mainGameMechsRef->getBoardSizeY() - 3);
         isValidPosition = true;
 
         // iterates through the player list
