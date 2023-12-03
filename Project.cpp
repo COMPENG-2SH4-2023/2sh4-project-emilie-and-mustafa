@@ -1,6 +1,7 @@
 #include <iostream>
 #include "MacUILib.h"
 #include "objPos.h"
+#include "objPosArrayList.h"
 #include <stdlib.h>
 #include <time.h>
 #include "GameMechs.h"
@@ -51,6 +52,9 @@ void Initialize(void)
     gameMechsPtr = new GameMechs();
     foodPosPtr = new Food();
     playerPtr = new Player(gameMechsPtr);
+    // this is a makeshift setup so i don't have to touch generateItemlist
+    objPos tempPos(-1,-1, 'o' );
+    
 
 
 }
@@ -82,6 +86,7 @@ void RunLogic(void)
                 break;
             case 9: // tab key to generate a new food
                 foodPosPtr->generateFood(blockOffPos);
+                break;
             default:
                 break;
         }
@@ -99,48 +104,76 @@ void DrawScreen(void)
 {
     MacUILib_clearScreen(); 
 
-    objPosArrayList* playerPosList;
+    bool drawn;
+
+    objPosArrayList* playerBody = playerPtr->getPlayerPos();
     objPos foodPos;
 
-    playerPtr->getPlayerPos(*playerPosList);
+    objPos tempBody;
+
+    
     foodPosPtr->getFoodPos(foodPos);
 
-    for(int i = 0; i < gameMechsPtr->getBoardSizeY(); i++){
-        for(int j = 0; j < gameMechsPtr->getBoardSizeX(); j++){
-            if(i == 0 || i == gameMechsPtr->getBoardSizeY()-1 || j == 0 || j == gameMechsPtr->getBoardSizeX()-1){
-                MacUILib_printf("#");
-            } else if (foodPos.x == j && foodPos.y == i){
-                MacUILib_printf("%c", foodPos.symbol);
-            } else {
-                int itemFound = 0;
-                for(int k=0; k<playerPosList->getSize(); k++){
-                    objPos playerPos;
-                    playerPosList->getElement(playerPos, k);
-                    if(j == playerPos.x && i == playerPos.y){
-                        MacUILib_printf("%c", playerPos.symbol);
-                        itemFound = 1;
-                        break;
-                    }
+    for(int j = 0; j <= gameMechsPtr->getBoardSizeY(); j++)
+    {
+        for(int i = 0; i <= gameMechsPtr->getBoardSizeX(); i++)
+        {
+            drawn = false;
+
+                // iterate through every element in the list
+            for(int k = 0; k < playerBody->getSize(); k++)
+            {
+                playerBody->getElement(tempBody, k);
+                if(tempBody.x == i && tempBody.y == j)
+                {
+                    MacUILib_printf("%c", tempBody.symbol);
+                    drawn = true;
+                    break;
                 }
-                if(!itemFound){
+            }
+
+            if(drawn) continue;
+                // if player body was drawn, don't draw anything below
+            if(j == 0 || j == gameMechsPtr->getBoardSizeY())
+            {
+                MacUILib_printf("#");
+            }
+            else if((i == foodPos.x) && (j == foodPos.y))
+            {
+                MacUILib_printf("%c", foodPos.symbol);
+            }
+            else{
+                if(i == 0 || i == gameMechsPtr->getBoardSizeX())
+                {
+                    MacUILib_printf("#");
+                }
+                else{
+
                     MacUILib_printf(" ");
                 }
             }
+        }
+        MacUILib_printf("\n");
+            
+            
+            
             
 
             
         }
-        MacUILib_printf("\n");
+        MacUILib_printf("\n\nYour Score (press space to increment): %d", gameMechsPtr->getScore());
+        MacUILib_printf("\nGet 10 points to win the game!");   
+        MacUILib_printf("\n\nPress tab generate a new food");
+        MacUILib_printf("\n\nPress backspace to lose the game");
+        
     } 
-
-    MacUILib_printf("\n\nYour Score (press space to increment): %d", gameMechsPtr->getScore());
-    MacUILib_printf("\nGet 10 points to win the game!");   
-    MacUILib_printf("\n\nPress tab generate a new food");
-    MacUILib_printf("\n\nPress backspace to lose the game");
+    
+    
+    
     
     
 
-}
+
 
 void LoopDelay(void)
 {
