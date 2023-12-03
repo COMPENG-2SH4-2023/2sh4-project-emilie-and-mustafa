@@ -114,11 +114,16 @@ void Player::movePlayer()
     
 }
 
+// new current head should be inserted to the head of the list.
+
+
 char Player::getPlayerSymbol(){
 
     objPos headPos;
     playerPosList->getHeadElement(headPos);
     return headPos.getSymbol();
+
+    playerPosList -> removeTail();
 }
 
 // compares the position of the head and the food
