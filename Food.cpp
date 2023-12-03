@@ -1,40 +1,55 @@
 #include "Food.h"
-#include "GameMechs.h"
-#include <ctime>
 
 
 Food::Food(){
     srand(static_cast<unsigned>(time(0)));
 
     int randX, randY;
-    char randSymbol;
+    char symbol = 'o';
 
-    randSymbol = 'A' + rand() % 26;
-    randX = 1+ rand() % (gameMechsPtr->getBoardSizeX() - 3); 
-    randY = 1+ rand() % (gameMechsPtr->getBoardSizeY() - 3);
+    // randomly generates x and y coordinates 
+    // until it gets a set that is not equal to the starting position of the player (14,7)
+    do {
+        randX = 1 + rand() % (gameMechsPtr->getBoardSizeX() - 3); 
+        randY = 1 + rand() % (gameMechsPtr->getBoardSizeY() - 3);
+    }
+    while(randX == 14 || randY == 7);
 
-    foodPos.setObjPos(randX, randY, randSymbol);
+    foodPos.setObjPos(randX, randY, symbol);
 }
 
 Food::~Food(){
-    delete foodPosPtr;
+    
 }
 
-void Food::generateFood(objPos blockOff){
-    srand(static_cast<unsigned>(time(0)));
+void Food::generateFood(objPosArrayList* blockOffList){
+    srand((time(0)));
 
     int randX, randY;
-    char randSymbol;
-
-    randSymbol = 'A' + rand() % 26;
+    char symbol = 'o';
+    objPos bodyPos;
+    bool isValidPosition = false; // flag to check if the food coordinates match any in the player list  
 
     do {
-        randX = 1 + rand() % (gameMechsPtr->getBoardSizeX() - 2); 
-        randY = 1 + rand() % (gameMechsPtr->getBoardSizeY() - 2);
-    }
-    while(randX == blockOff.x || randY == blockOff.y);
+        // gets random coordinates for x and y, sets the flag to true
+        randX = 1 + rand() % (gameMechsPtr->getBoardSizeX() - 3);
+        randY = 1 + rand() % (gameMechsPtr->getBoardSizeY() - 3);
+        isValidPosition = true;
 
-    foodPos.setObjPos(randX, randY, randSymbol);
+        // iterates through the player list
+        for (int j = 0; j < blockOffList->getSize(); j++) {
+            blockOffList->getElement(bodyPos, j);
+            // if the coordinates match any in the list, the flag is set to false and new coordinate will be made
+            // if the coordinates are unique, the flag stays set to true and breaks out of the loop
+            if (randX == bodyPos.x && randY == bodyPos.y) {
+                isValidPosition = false;
+                break;
+            }
+        }
+    } while (!isValidPosition);
+
+    // sets the newly found coordinates to food
+    foodPos.setObjPos(randX, randY, symbol);
 }
 
 void Food::getFoodPos(objPos &returnPos){

@@ -58,7 +58,7 @@ void objPosArrayList::removeHead()
 {
     
     if(sizeList == 0){
-        throw std::out_of_range("Full list.");
+        throw std::out_of_range("Empty list.");
     } else {
         for(int i = 0; i < sizeList-1; i++){
             aList[i] = aList[i+1];
@@ -72,7 +72,7 @@ void objPosArrayList::removeHead()
 void objPosArrayList::removeTail()
 {
     if(sizeList == 0){
-        throw std::out_of_range("Full list.");
+        throw std::out_of_range("Empty list.");
     } else {
         sizeList--;      
     }
@@ -100,9 +100,11 @@ void objPosArrayList::getTailElement(objPos &returnPos)
 
 void objPosArrayList::getElement(objPos &returnPos, int index)
 {
-    if (index < 0 || index >= ARRAY_MAX_CAP) {
+    if (index < 0 || index >= sizeList) {
 		throw std::out_of_range("Invalid index.");
-	} else {
+	} else if (sizeList == 0){
+        throw std::out_of_range("Empty list.");
+    } else {
         returnPos = aList[index];
     }
 }

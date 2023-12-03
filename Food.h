@@ -1,8 +1,8 @@
 #ifndef FOOD_H
 #define FOOD_H
 
-#include <cstdlib>
-#include <ctime>
+#include <stdlib.h>
+#include <time.h>
 #include "GameMechs.h"
 
 using namespace std;
@@ -16,13 +16,12 @@ class Food {
         Food();
         ~Food();
 
-        void generateFood(objPos blockOff);
+        void generateFood(objPosArrayList* blockOffList);
         void getFoodPos(objPos &returnPos);
 
         char getFoodSymbol();
 
 
 };
-extern Food* foodPosPtr;
 
 #endif

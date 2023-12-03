@@ -16,12 +16,9 @@ GameMechs::GameMechs(int boardX, int boardY)
     boardSizeY = boardY;
 }
 
-// do you need a destructor?
-
 GameMechs::~GameMechs(){
-    delete gameMechsPtr;
-}
 
+}
 
 bool GameMechs::getExitFlagStatus()
 {
@@ -59,10 +56,11 @@ void GameMechs::setExitTrue()
     exitFlag = true;
 }
 
-void GameMechs::setLoseFlag()
+void GameMechs::setLoseTrue()
 {
     loseFlag = true;
 }
+
 
 void GameMechs::setInput(char this_input)
 {
@@ -76,11 +74,5 @@ void GameMechs::clearInput()
 
 void GameMechs::incrementScore(){
     score++;
-    
-    // may have to be changed to increase by numbers other than one based on game conditions
+
 }
-
-// void endGameActions(){
-
-// }
-

@@ -4,7 +4,6 @@
 #include <cstdlib>
 #include <time.h>
 
-#include "objPos.h"
 #include "objPosArrayList.h"
 
 using namespace std;
@@ -34,7 +33,7 @@ class GameMechs
         
         void setExitTrue();
         void setInput(char this_input);
-        void setLoseFlag();
+        void setLoseTrue();
 
         bool getExitFlagStatus();
         bool getLoseFlagStatus();
