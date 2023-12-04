@@ -72,7 +72,7 @@ void GameMechs::clearInput()
     input = 0;
 }
 
-void GameMechs::incrementScore(){
-    score++;
+void GameMechs::incrementScore(int scoreAdd){
+    score += scoreAdd;
 
 }

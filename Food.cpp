@@ -5,57 +5,119 @@ Food::Food(GameMechs* thisGMRef){
     srand((time(0)));
     mainGameMechsRef = thisGMRef; // reference to game mechs class
     int randX, randY;
-    char symbol = 'o';
+    char symbol;
+    bool isValidPosition;
 
-    // randomly generates x and y coordinates 
-    // until it gets a set that is not equal to the starting position of the player (14,7)
-    do {
-        randX = 1 + rand() % (mainGameMechsRef->getBoardSizeX() - 3); 
-        randY = 1 + rand() % (mainGameMechsRef->getBoardSizeY() - 3);
+    foodBucket = new objPosArrayList();
+
+    for(int i=0; i<5; i++)
+    {
+        symbol = 'o';
+
+        do 
+        {
+            // gets random coordinates for x and y, sets the flag to true
+            randX = 1 + rand() % (mainGameMechsRef->getBoardSizeX() - 3);
+            randY = 1 + rand() % (mainGameMechsRef->getBoardSizeY() - 3);
+            isValidPosition = true;
+
+            // Check for coordinates in the foodBucket list
+            for (int j = 0; j < foodBucket->getSize(); j++) {
+                foodBucket->getElement(foodPos, j);
+
+                // if the coordinates match any in the list, the flag is set to false and new coordinate will be made
+                // if the coordinates are unique, the flag stays set to true and breaks out of the loop
+                if (randX == foodPos.x && randY == foodPos.y) {
+                    isValidPosition = false;
+                    break;
+                }
+            }
+        } while (!isValidPosition);
+
+        // set special symbols for 2 elements in food bucket
+        if (i%2 != 0)
+        {
+            symbol = '$';
+        }
+
+        // sets the newly found coordinates to food
+        foodPos.setObjPos(randX, randY, symbol);
+        foodBucket->insertHead(foodPos);
     }
-    while(randX == 14 || randY == 7);
 
-    foodPos.setObjPos(randX, randY, symbol);
 }
 
 Food::~Food(){
-    
+    delete foodBucket;
 }
 
 void Food::generateFood(objPosArrayList* blockOffList){
     srand((time(0)));
 
     int randX, randY;
-    char symbol = 'o';
-    objPos bodyPos;
-    bool isValidPosition = false; // flag to check if the food coordinates match any in the player list  
+    char symbol;
+    bool isValidPosition = false; // flag to check if the food coordinates match any in the player list or already in the foodBucket list
 
-    do {
-        // gets random coordinates for x and y, sets the flag to true
-        randX = 1 + rand() % (mainGameMechsRef->getBoardSizeX() - 3);
-        randY = 1 + rand() % (mainGameMechsRef->getBoardSizeY() - 3);
-        isValidPosition = true;
+    // generate new food bucket list
+    for(int i =0; i<foodBucket->getSize(); i++)
+    {
+        symbol = 'o';
+        foodBucket->removeTail();
 
-        // iterates through the player list
-        for (int j = 0; j < blockOffList->getSize(); j++) {
-            blockOffList->getElement(bodyPos, j);
-            // if the coordinates match any in the list, the flag is set to false and new coordinate will be made
-            // if the coordinates are unique, the flag stays set to true and breaks out of the loop
-            if (randX == bodyPos.x && randY == bodyPos.y) {
-                isValidPosition = false;
-                break;
+        do 
+        {
+            // gets random coordinates for x and y, sets the flag to true
+            randX = 1 + rand() % (mainGameMechsRef->getBoardSizeX() - 3);
+            randY = 1 + rand() % (mainGameMechsRef->getBoardSizeY() - 3);
+            isValidPosition = true;
+
+            // iterates through the player and existing foodbucket list to check for matching coordinates
+            for (int j = 0; j < blockOffList->getSize(); j++) 
+            {
+                blockOffList->getElement(bodyPos, j);
+                // if the coordinates match any in the list, the flag is set to false and new coordinate will be made
+                // if the coordinates are unique, the flag stays set to true and breaks out of the loop
+                if (randX == bodyPos.x && randY == bodyPos.y) 
+                {
+                    isValidPosition = false;
+                    break;
+                }
             }
-        }
-    } while (!isValidPosition);
 
-    // sets the newly found coordinates to food
-    foodPos.setObjPos(randX, randY, symbol);
+            // Check for coordinates in the foodBucket list
+            for (int j = 0; j < foodBucket->getSize(); j++) 
+            {
+                foodBucket->getElement(foodPos, j);
+                // if the coordinates match any in the list, the flag is set to false and new coordinate will be made
+                // if the coordinates are unique, the flag stays set to true and breaks out of the loop
+                if (randX == foodPos.x && randY == foodPos.y) 
+                {
+                    isValidPosition = false;
+                    break;
+                }
+            }
+
+        } while (!isValidPosition);
+
+        // set special symbols for 2 elements in food bucket
+        if (i%2 != 0)
+        {
+            symbol = '$';
+        }
+
+        // sets the newly found coordinates to food
+        foodPos.setObjPos(randX, randY, symbol);
+        foodBucket->insertHead(foodPos);
+    }
 }
 
-void Food::getFoodPos(objPos &returnPos){
-    returnPos = foodPos;
+
+void Food::getFoodBucket(objPosArrayList &returnList){
+    returnList = *foodBucket;
 }
 
 char Food::getFoodSymbol(){
-    return foodPos.getSymbol();
+    objPos tempPos;
+    foodBucket->getElement(tempPos, 0);
+    return tempPos.getSymbol();
 }

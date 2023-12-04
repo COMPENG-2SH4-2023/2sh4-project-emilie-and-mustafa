@@ -32,11 +32,13 @@ class Player
         //objPos playerPos;   // Upgrade this in iteration 3.       
         
         objPosArrayList* playerPosList; // iteration 3 upgrade
-        
         enum Dir myDir;
         // Need a reference to the Main Game Mechanisms
         GameMechs* mainGameMechsRef;
         Food* myFoodRef;
+        
+        objPos foodPos;
+        objPos headPos;
 };
 
 #endif

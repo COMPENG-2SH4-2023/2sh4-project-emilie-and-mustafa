@@ -96,8 +96,14 @@ void Player::movePlayer()
     // checks if the new position is on top of a food
     // increments the score and generates a new food
     // otherwise, removes the tail
-    if(checkFoodConsumption()){
-        mainGameMechsRef->incrementScore();
+    if(checkFoodConsumption())
+    {
+        if(foodPos.getSymbol() == '$')
+        {   
+            mainGameMechsRef->incrementScore(10);
+        } else {
+            mainGameMechsRef->incrementScore(1);
+        }
         myFoodRef->generateFood(playerPosList);
     } else {
         playerPosList->removeTail();
@@ -123,19 +129,27 @@ char Player::getPlayerSymbol(){
     playerPosList->getHeadElement(headPos);
     return headPos.getSymbol();
 
-    playerPosList -> removeTail();
 }
 
 // compares the position of the head and the food
 bool Player::checkFoodConsumption(){
 
     objPos headPos;
-    objPos foodPos;
-    
-    myFoodRef->getFoodPos(foodPos);
+    objPosArrayList* foodList;
+
+    myFoodRef->getFoodBucket(*foodList);
     playerPosList->getHeadElement(headPos);
 
-    return headPos.isPosEqual(&foodPos);
+    for(int i=0; i<foodList->getSize(); i++)
+    {
+        foodList->getElement(foodPos, i);
+        if(headPos.isPosEqual(&foodPos))
+        {
+            return true;
+        }
+    }
+
+    return false;
     
 }
 

@@ -43,7 +43,7 @@ class GameMechs
         int getScore();
 
         void clearInput();
-        void incrementScore();
+        void incrementScore(int scoreAdd);
 
         void generateFood(objPos blockoff);
         void getFoodpos(objPos &returnPos);

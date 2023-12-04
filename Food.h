@@ -4,6 +4,7 @@
 #include <stdlib.h>
 #include <time.h>
 #include "GameMechs.h"
+#include "MacUILib.h"
 
 using namespace std;
 
@@ -11,7 +12,9 @@ class Food {
 
     private:
         objPos foodPos;
+        objPos bodyPos;
         GameMechs* mainGameMechsRef;
+        objPosArrayList* foodBucket;
 
     public:
         Food(GameMechs* thisGMRef);
@@ -19,6 +22,7 @@ class Food {
 
         void generateFood(objPosArrayList* blockOffList);
         void getFoodPos(objPos &returnPos);
+        void getFoodBucket(objPosArrayList &returnList);
 
         char getFoodSymbol();
 

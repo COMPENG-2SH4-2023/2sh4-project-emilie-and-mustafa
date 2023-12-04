@@ -15,6 +15,8 @@ using namespace std;
 GameMechs* gameMechsPtr;
 Food* foodPtr;
 Player* playerPtr;
+objPosArrayList* foodList;
+
 
 
 void Initialize(void);
@@ -51,6 +53,7 @@ void Initialize(void)
     gameMechsPtr = new GameMechs(); // pointer to gameMechs class
     foodPtr = new Food(gameMechsPtr); // pointer to food class
     playerPtr = new Player(gameMechsPtr, foodPtr); // pointer to player class
+    foodList = new objPosArrayList();
 
 }
 
@@ -79,8 +82,8 @@ void RunLogic(void)
     }
     playerPtr->movePlayer(); // moves player based on player direction
 
-    // Game winning condition: score = 10
-    if(gameMechsPtr->getScore() == 10){
+    // Game winning condition: score = 50
+    if(gameMechsPtr->getScore() >= 50){
         gameMechsPtr->setExitTrue();
     }
     
@@ -93,27 +96,25 @@ void DrawScreen(void)
     objPos current; // current position
     objPos tempBody; // position of an element from the player list
     objPos foodPos; // food position
-    objPosArrayList* playerBody;
     char playerSymbol, foodSymbol;
     int itemFound;
 
-    foodPtr->getFoodPos(foodPos); 
+    objPosArrayList* playerBody;
+    
+
     playerBody = playerPtr->getPlayerPos();
+    foodPtr->getFoodBucket(*foodList);
+    
 
     // loops through each position of the game board to draw it
     for(int i = 0; i < gameMechsPtr->getBoardSizeY(); i++){
         for(int j = 0; j < gameMechsPtr->getBoardSizeX(); j++){
-
+            
             current.setObjPos(j,i,' '); // current position on the board
-
-            // checks if the food is equal to the current position and gets the symbol
-            foodSymbol = foodPos.getSymbolIfPosEqual(&current);
 
             // sets boarder if at edge of row or column
             if(i == 0 || i == gameMechsPtr->getBoardSizeY()-1 || j == 0 || j == gameMechsPtr->getBoardSizeX()-1){
                 MacUILib_printf("#");
-            } else if (foodSymbol == 'o'){ // prints player symbol if at its coordinates
-                MacUILib_printf("%c", foodSymbol);
             } else {
                 // iterates thorugh player list and gets symbol if coordinates match
                 itemFound = 0;
@@ -121,6 +122,15 @@ void DrawScreen(void)
                     playerBody->getElement(tempBody, k);
                     if(tempBody.isPosEqual(&current)){
                         MacUILib_printf("%c", tempBody.getSymbol());
+                        itemFound = 1;
+                        break;
+                    }
+                }
+
+                for(int k =0; k<foodList->getSize(); k++){
+                    foodList->getElement(foodPos, k);
+                    if(foodPos.isPosEqual(&current)){
+                        MacUILib_printf("%c", foodPos.getSymbol());
                         itemFound = 1;
                         break;
                     }
@@ -139,8 +149,9 @@ void DrawScreen(void)
 
     // in game messages
     MacUILib_printf("\n\nYour Score: %d", gameMechsPtr->getScore());
-    MacUILib_printf("\n\nGet 10 points to win the game!");
-    MacUILib_printf("\nIf you collide with yourself, you lose!");   
+    MacUILib_printf("\n\nGet 50 points to win the game!");
+    MacUILib_printf("\n\n'o' foods are worth 1 point\t'$' foods are worth 10 points'");
+    MacUILib_printf("\n\nIf you collide with yourself, you lose!");   
     MacUILib_printf("\n\nPress escape to exit the game.");
 
 }
@@ -160,7 +171,7 @@ void CleanUp(void)
         MacUILib_printf("You collided with yourself.\nSorry, You Lose!!");
         MacUILib_printf("\n\nYour Final Score: %d", gameMechsPtr->getScore()); 
     } else{ // if the lose flag is not raised, the player either won or exited the game
-        if(gameMechsPtr->getScore() == 10){
+        if(gameMechsPtr->getScore() >= 50){
             MacUILib_printf("Congrats, You Won!");
             MacUILib_printf("\n\nYour Final Score: %d\n\n", gameMechsPtr->getScore());  
         } else {

@@ -31,7 +31,7 @@ int objPosArrayList::getSize()
 void objPosArrayList::insertHead(objPos thisPos)
 {
     if(sizeList >= sizeArray){
-        throw std::out_of_range("Full list.");
+        throw std::out_of_range("Full list h.");
     } else {
         for(int i = sizeList; i > 0; i--){
             aList[i] = aList[i-1];
@@ -46,7 +46,7 @@ void objPosArrayList::insertHead(objPos thisPos)
 void objPosArrayList::insertTail(objPos thisPos)
 {
     if(sizeList >= sizeArray){
-        throw std::out_of_range("Full list.");
+        throw std::out_of_range("Full list t.");
     } else {
         aList[sizeList++] = thisPos;
     }
