@@ -137,7 +137,7 @@ bool Player::checkFoodConsumption(){
     objPos headPos;
     objPosArrayList* foodList;
 
-    myFoodRef->getFoodBucket(*foodList);
+    foodList = myFoodRef->getFoodBucket();
     playerPosList->getHeadElement(headPos);
 
     for(int i=0; i<foodList->getSize(); i++)

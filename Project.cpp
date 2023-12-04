@@ -15,7 +15,7 @@ using namespace std;
 GameMechs* gameMechsPtr;
 Food* foodPtr;
 Player* playerPtr;
-objPosArrayList* foodList;
+
 
 
 
@@ -53,7 +53,6 @@ void Initialize(void)
     gameMechsPtr = new GameMechs(); // pointer to gameMechs class
     foodPtr = new Food(gameMechsPtr); // pointer to food class
     playerPtr = new Player(gameMechsPtr, foodPtr); // pointer to player class
-    foodList = new objPosArrayList();
 
 }
 
@@ -100,10 +99,11 @@ void DrawScreen(void)
     int itemFound;
 
     objPosArrayList* playerBody;
+    objPosArrayList* foodList;
     
 
     playerBody = playerPtr->getPlayerPos();
-    foodPtr->getFoodBucket(*foodList);
+    foodList = foodPtr->getFoodBucket();
     
 
     // loops through each position of the game board to draw it

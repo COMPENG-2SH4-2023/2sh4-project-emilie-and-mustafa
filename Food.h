@@ -22,7 +22,7 @@ class Food {
 
         void generateFood(objPosArrayList* blockOffList);
         void getFoodPos(objPos &returnPos);
-        void getFoodBucket(objPosArrayList &returnList);
+        objPosArrayList* getFoodBucket();
 
         char getFoodSymbol();
 

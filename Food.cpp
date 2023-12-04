@@ -112,8 +112,8 @@ void Food::generateFood(objPosArrayList* blockOffList){
 }
 
 
-void Food::getFoodBucket(objPosArrayList &returnList){
-    returnList = *foodBucket;
+objPosArrayList* Food::getFoodBucket(){
+    return foodBucket;
 }
 
 char Food::getFoodSymbol(){
